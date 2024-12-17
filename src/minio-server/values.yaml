@@ -1,0 +1,13 @@
+namespace: minio-server
+
+imageVersion: RELEASE.2024-08-03T04-33-23Z
+
+apiDomain: api.example.com
+consoleDomain: example.com
+
+username: user
+password: pass
+
+volumeHandle: pvc-b9932e0e-5e87-4bea-9458-9480a5f6a23c
+volumeSize: 100Gi
+numberOfReplicas: 3
