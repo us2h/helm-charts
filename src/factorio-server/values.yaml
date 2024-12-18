@@ -1,1 +1,8 @@
+factorioServerImage: factoriotools/factorio
+version: 2.0.23
 namespace: factorio-server
+instanceName: FactorioServer
+instanceDescription: Factorio Server
+token: token
+volumeSize: 10Gi
+port: 34197

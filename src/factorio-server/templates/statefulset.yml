@@ -28,7 +28,7 @@ spec:
             - containerPort: 34197
           readinessProbe:
             tcpSocket:
-              port: 27015
+              port: 34197
             initialDelaySeconds: 10
             periodSeconds: 5
   volumeClaimTemplates:
