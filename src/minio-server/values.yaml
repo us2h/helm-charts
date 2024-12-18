@@ -8,6 +8,4 @@ consoleDomain: example.com
 username: user
 password: pass
 
-volumeHandle: pvc-b9932e0e-5e87-4bea-9458-9480a5f6a23c
 volumeSize: 100Gi
-numberOfReplicas: 3
