@@ -26,9 +26,10 @@ spec:
               name: {{ .Release.Name }}-volume
           ports:
             - containerPort: 34197
+            - containerPort: 27015
           readinessProbe:
             tcpSocket:
-              port: 34197
+              port: 27015
             initialDelaySeconds: 10
             periodSeconds: 5
   volumeClaimTemplates:
