@@ -21,6 +21,16 @@ spec:
       containers:
         - name: {{ .Release.Name }}
           image: {{ .Values.factorioServerImage }}:{{ .Values.version }}
+          env:
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: FACTORIO_TOKEN
+            - name: INSTANCE_NAME
+              value: {{ .Values.instanceName }}
+            - name: INSTANCE_DESCRIPTION
+              value: {{ .Values.instanceDescription }}
           volumeMounts:
             - mountPath: "/factorio"
               name: {{ .Release.Name }}-volume

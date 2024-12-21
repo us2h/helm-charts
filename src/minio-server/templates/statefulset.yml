@@ -20,17 +20,45 @@ spec:
         node-role.kubernetes.io/worker: "true"
       containers:
         - name: {{ .Release.Name }}
-          image: {{ .Values.factorioServerImage }}:{{ .Values.version }}
+          image: minio/minio:{{ .Values.imageVersion }}
+          args:
+            - server
+            - --console-address
+            - ":9001"
+            - /data
+          env:
+            - name: MINIO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: MINIO_ROOT_USER
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: MINIO_ROOT_PASSWORD
           volumeMounts:
-            - mountPath: "/factorio"
+            - mountPath: "/data"
               name: {{ .Release.Name }}-volume
           ports:
-            - containerPort: 34197
+            - containerPort: 9000
+            - containerPort: 9001
           readinessProbe:
-            tcpSocket:
-              port: 27015
-            initialDelaySeconds: 10
-            periodSeconds: 5
+            httpGet:
+              path: /minio/health/live
+              port: 9000
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /minio/health/live
+              port: 9000
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 30
+            failureThreshold: 5
   volumeClaimTemplates:
     - metadata:
         name: {{ .Release.Name }}-volume

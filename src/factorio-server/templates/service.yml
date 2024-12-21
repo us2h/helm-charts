@@ -2,12 +2,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}-service
+  namespace: {{ .Release.Namespace | default .Values.namespace }}
+  labels:
+    app: {{ .Release.Name }}
 spec:
-  type: LoadBalancer
   ports:
-    - name: {{ .Release.Name }}-port
-      protocol: UDP
-      port: {{ .Values.port }}
+    - port: {{ .Values.port }}
       targetPort: 34197
+      name: game
+      protocol: UDP
+    - port: {{ .Values.rconPort }}
+      targetPort: 27015
+      name: rcon
+  clusterIP: None
   selector:
     app: {{ .Release.Name }}

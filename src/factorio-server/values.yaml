@@ -6,3 +6,4 @@ instanceDescription: Factorio Server
 token: token
 volumeSize: 10Gi
 port: 34197
+rconPort: 27015
