@@ -7,13 +7,13 @@ metadata:
     app: {{ .Release.Name }}
 spec:
   ports:
-    - port: {{ .Values.port }}
-      targetPort: 34197
-      name: game
+    - name: factorio-udp
+      port: {{ .Values.port }}
       protocol: UDP
-    - port: {{ .Values.rconPort }}
+      targetPort: 34197
+    - name: factorio-tcp
+      port: {{ .Values.rconPort }}
+      protocol: TCP
       targetPort: 27015
-      name: rcon
-  clusterIP: None
   selector:
     app: {{ .Release.Name }}
