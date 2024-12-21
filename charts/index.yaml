@@ -3,7 +3,17 @@ entries:
   factorio-server:
   - apiVersion: v2
     appVersion: 2.0.23
-    created: "2024-12-21T18:50:54.811972+01:00"
+    created: "2024-12-21T19:11:57.770703+01:00"
+    description: A Helm chart for Factorio server
+    digest: 6e5d2ee90eeec6c856b64b0c3ff607d84856bfad2717e005d279b30f9d463fd0
+    name: factorio-server
+    type: application
+    urls:
+    - https://us2h.github.io/helm-charts/charts/factorio-server-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 2.0.23
+    created: "2024-12-21T19:11:57.77058+01:00"
     description: A Helm chart for Factorio server
     digest: aec3f68c45ea362ce82554b003276e9aec4f4c92b91e649de0f5e712767ebe2f
     name: factorio-server
@@ -13,7 +23,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: 2.0.23
-    created: "2024-12-21T18:50:54.810375+01:00"
+    created: "2024-12-21T19:11:57.770349+01:00"
     description: A Helm chart for Factorio server
     digest: 5e7e08b98f785a1da98076d9a84a95ce650abc8839f8fe0beae8fe913b519a85
     name: factorio-server
@@ -24,7 +34,7 @@ entries:
   minio-server:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-12-21T18:50:54.815423+01:00"
+    created: "2024-12-21T19:11:57.771597+01:00"
     description: A Helm chart for Kubernetes
     digest: d0c05f3b6baec8a18a6cd258849988b195b7eb011837373144c7f7df0a5630f8
     name: minio-server
@@ -34,7 +44,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-12-21T18:50:54.815052+01:00"
+    created: "2024-12-21T19:11:57.771341+01:00"
     description: A Helm chart for Kubernetes
     digest: 2d0e5825c755f4d00c285edba2145c055247eeef5330912a3a0e7e3b83a2ca3f
     name: minio-server
@@ -44,7 +54,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-12-21T18:50:54.812849+01:00"
+    created: "2024-12-21T19:11:57.771021+01:00"
     description: A Helm chart for Kubernetes
     digest: e0aa838c6b49953100a1b6fca3141e955aac79499a02a19ce3149a4103ea182c
     name: minio-server
@@ -55,7 +65,7 @@ entries:
   test:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-12-21T18:50:54.817059+01:00"
+    created: "2024-12-21T19:11:57.772488+01:00"
     description: Test Helm chart for Kubernetes
     digest: 9f488f1241beba4c919a97b7f1b9d6e7041fd91f7682ff3f02fda721adfb3cb5
     name: test
@@ -65,7 +75,7 @@ entries:
     version: 1.0.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-12-21T18:50:54.816513+01:00"
+    created: "2024-12-21T19:11:57.772291+01:00"
     description: Test Helm chart for Kubernetes
     digest: dafab3cc37c32279bd0e35a267c23ddcc56ee1659ea39914297deacbf25b0122
     name: test
@@ -75,7 +85,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-12-21T18:50:54.815918+01:00"
+    created: "2024-12-21T19:11:57.771893+01:00"
     description: Test Helm chart for Kubernetes
     digest: ab6fa87c54ef7c9ed953691092e5911781594c7a5135e7d560f424075d9eff9f
     name: test
@@ -83,4 +93,4 @@ entries:
     urls:
     - https://us2h.github.io/helm-charts/charts/test-1.0.0.tgz
     version: 1.0.0
-generated: "2024-12-21T18:50:54.809004+01:00"
+generated: "2024-12-21T19:11:57.769818+01:00"
