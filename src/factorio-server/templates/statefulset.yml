@@ -37,6 +37,8 @@ spec:
           ports:
             - containerPort: 34197
             - containerPort: 27015
+          securityContext:
+            runAsUser: 0
           readinessProbe:
             tcpSocket:
               port: 27015
