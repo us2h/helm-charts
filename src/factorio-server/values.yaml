@@ -1,9 +1,41 @@
-factorioServerImage: factoriotools/factorio
-version: 2.0.23
-namespace: factorio-server
-instanceName: FactorioServer
-instanceDescription: Factorio Server
-token: token
-volumeSize: 10Gi
-port: 34197
-rconPort: 27015
+config:
+  factorioServerImage: factoriotools/factorio
+  version: 2.0.28
+  namespace: factorio-server
+  volumeSize: 10Gi
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "2000m"
+    limits:
+      memory: "4Gi"
+      cpu: "4000m"
+  port: 34197
+  rconPort: 27015
+
+gameSettings:
+  name: Factorio Server
+  description: Kubernetes Factorio Server
+  tags: ["game", "tags"]
+  maxPlayers: 0
+  visibility:
+    public: false
+    lan: true
+  username: ""
+  gamePassword: ""
+  token: ""
+  requireUserVerification: true
+  maxUploadInKilobytesPerSecond: 0
+  maxUploadSlots: 5
+  minimumLatencyInTicks: 0
+  maxHeartbeatsPerSecond: 60
+  ignorePlayerLimitForReturningPlayers: false
+  allowCommands: "admins-only"
+  autosaveInterval: 10
+  autosaveSlots: 5
+  afkAutokickInterval: 0
+  autoPause: true
+  autoPauseWhenPlayersConnect: false
+  onlyAdminsCanPauseTheGame: true
+  autosaveOnlyOnServer: true
+  nonBlockingSaving: false

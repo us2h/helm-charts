@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  namespace: {{ .Values.config.namespace | default .Release.Namespace }}
+data:
+  server-settings.json: |
+    {
+      "name": {{ .Values.gameSettings.name | quote }},
+      "description": {{ .Values.gameSettings.description | quote }},
+      "tags": {{ .Values.gameSettings.tags | toJson }},
+      "max_players": {{ .Values.gameSettings.maxPlayers }},
+      "visibility": {
+        "public": {{ .Values.gameSettings.visibility.public }},
+        "lan": {{ .Values.gameSettings.visibility.lan }}
+      },
+      "username": {{ .Values.gameSettings.username | quote }},
+      "token": {{ .Values.gameSettings.token | quote }},
+      "game_password": {{ .Values.gameSettings.gamePassword | quote }},
+      "require_user_verification": {{ .Values.gameSettings.requireUserVerification }},
+      "max_upload_in_kilobytes_per_second": {{ .Values.gameSettings.maxUploadInKilobytesPerSecond }},
+      "max_upload_slots": {{ .Values.gameSettings.maxUploadSlots }},
+      "minimum_latency_in_ticks": {{ .Values.gameSettings.minimumLatencyInTicks }},
+      "max_heartbeats_per_second": {{ .Values.gameSettings.maxHeartbeatsPerSecond }},
+      "ignore_player_limit_for_returning_players": {{ .Values.gameSettings.ignorePlayerLimitForReturningPlayers }},
+      "allow_commands": {{ .Values.gameSettings.allowCommands | quote }},
+      "autosave_interval": {{ .Values.gameSettings.autosaveInterval }},
+      "autosave_slots": {{ .Values.gameSettings.autosaveSlots }},
+      "afk_autokick_interval": {{ .Values.gameSettings.afkAutokickInterval }},
+      "auto_pause": {{ .Values.gameSettings.autoPause }},
+      "auto_pause_when_players_connect": {{ .Values.gameSettings.autoPauseWhenPlayersConnect }},
+      "only_admins_can_pause_the_game": {{ .Values.gameSettings.onlyAdminsCanPauseTheGame }},
+      "autosave_only_on_server": {{ .Values.gameSettings.autosaveOnlyOnServer }},
+      "non_blocking_saving": {{ .Values.gameSettings.nonBlockingSaving }}
+    }

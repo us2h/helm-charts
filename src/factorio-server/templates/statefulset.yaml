@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-statefulset
+  namespace: {{ .Values.config.namespace | default .Release.Namespace }}
+spec:
+  serviceName: {{ .Release.Name }}
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      initContainers:
+      - name: factorio-server-config
+        image: busybox
+        command: ['sh', '-c', ' 
+          mkdir -p /factorio/config && 
+          cp -r /factorio/config/ /config/ && 
+          cp /tmp/server-settings.json /config/server-settings.json && 
+          chown -R 845:845 /config/ /factorio/saves'
+        ]
+        volumeMounts:
+        - name: data
+          mountPath: /factorio
+        - name: server-config
+          mountPath: /tmp/server-settings.json
+          subPath: server-settings.json
+        - name: config-dir
+          mountPath: /config
+      containers:
+      - name: {{ .Release.Name }}
+        image: {{ .Values.config.factorioServerImage }}:{{ .Values.config.version }}
+        ports:
+        - containerPort: 34197
+          protocol: UDP
+        - containerPort: 27015
+          protocol: TCP
+        volumeMounts:
+        - name: data
+          mountPath: /factorio
+        - name: config-dir
+          mountPath: /factorio/config
+        resources:
+          requests:
+            memory: {{ .Values.config.resources.requests.memory }}
+            cpu: {{ .Values.config.resources.requests.cpu }}
+          limits:
+            memory: {{ .Values.config.resources.limits.memory }}
+            cpu: {{ .Values.config.resources.limits.cpu }}
+      volumes:
+      - name: server-config
+        configMap:
+          name: {{ .Release.Name }}-config
+      - name: config-dir
+        emptyDir: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.config.volumeSize }}
