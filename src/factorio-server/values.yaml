@@ -1,15 +1,8 @@
 config:
   factorioServerImage: factoriotools/factorio
-  version: 2.0.28
+  version: 2.0.32
   namespace: factorio-server
   volumeSize: 10Gi
-  resources:
-    requests:
-      memory: "1Gi"
-      cpu: "2000m"
-    limits:
-      memory: "4Gi"
-      cpu: "4000m"
   port: 34197
   rconPort: 27015
 

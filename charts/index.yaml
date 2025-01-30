@@ -2,8 +2,18 @@ apiVersion: v1
 entries:
   factorio-server:
   - apiVersion: v2
+    appVersion: 2.0.32
+    created: "2025-01-30T13:32:16.01066+01:00"
+    description: A Helm chart for Factorio server
+    digest: 7be3bd3cdba97aa123676a619783b7f0a039f8f7c4f3ca1750b7fde624411f09
+    name: factorio-server
+    type: application
+    urls:
+    - https://us2h.github.io/helm-charts/charts/factorio-server-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
     appVersion: 2.0.28
-    created: "2025-01-02T19:56:44.676994+01:00"
+    created: "2025-01-30T13:32:16.010479+01:00"
     description: A Helm chart for Factorio server
     digest: 6f2dbb882c45f762b127cef2adb5a67168f0b5fa0432cfa8e048567116444d11
     name: factorio-server
@@ -14,7 +24,7 @@ entries:
   minio-server:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-01-02T19:56:44.677155+01:00"
+    created: "2025-01-30T13:32:16.011297+01:00"
     description: A Helm chart for Kubernetes
     digest: 77350cd0d0f1fe3e8a1fa85b9d4cbc3a115772558bd69cdbada0cc344ba885ab
     name: minio-server
@@ -25,7 +35,7 @@ entries:
   test:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-01-02T19:56:44.677527+01:00"
+    created: "2025-01-30T13:32:16.012341+01:00"
     description: Test Helm chart for Kubernetes
     digest: 9f488f1241beba4c919a97b7f1b9d6e7041fd91f7682ff3f02fda721adfb3cb5
     name: test
@@ -35,7 +45,7 @@ entries:
     version: 1.0.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-01-02T19:56:44.677417+01:00"
+    created: "2025-01-30T13:32:16.012083+01:00"
     description: Test Helm chart for Kubernetes
     digest: dafab3cc37c32279bd0e35a267c23ddcc56ee1659ea39914297deacbf25b0122
     name: test
@@ -45,7 +55,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-01-02T19:56:44.677288+01:00"
+    created: "2025-01-30T13:32:16.011798+01:00"
     description: Test Helm chart for Kubernetes
     digest: ab6fa87c54ef7c9ed953691092e5911781594c7a5135e7d560f424075d9eff9f
     name: test
@@ -53,4 +63,4 @@ entries:
     urls:
     - https://us2h.github.io/helm-charts/charts/test-1.0.0.tgz
     version: 1.0.0
-generated: "2025-01-02T19:56:44.676677+01:00"
+generated: "2025-01-30T13:32:16.008743+01:00"
