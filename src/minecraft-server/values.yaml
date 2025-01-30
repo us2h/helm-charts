@@ -1,0 +1,20 @@
+config:
+  eula: "TRUE"
+  namespace: minecraft-server
+  imageVersion: itzg/minecraft-server
+  minecraftVersion: LATEST
+  javaVersion: java21
+
+  s3Storage:
+    s3Region: us-east-1
+    s3Endpoint: http://minio.minio.svc.cluster.local:9000
+    s3BucketName: minecraft-modpacks
+  serverType: CURSEFORGE
+  curseforge:
+    serverMod: "/modpacks/SteamPunk [LPS] - 1.20 Update-v11.zip"
+
+  network:
+    tcpPort: 25565
+    udpPort: 19132
+  resources:
+    storage: 10Gi

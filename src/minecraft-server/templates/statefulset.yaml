@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-statefulset
+spec:
+  serviceName: {{ .Release.Name }}-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      initContainers:
+      - name: download-modpack
+        image: amazon/aws-cli
+        command:
+        - /bin/sh
+        - -c
+        - |
+          aws configure set aws_access_key_id $S3_ACCESS_KEY_ID &&
+          aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY &&
+          aws configure set default.region $S3_REGION &&
+          aws --endpoint-url $S3_ENDPOINT s3 cp s3://$S3_BUCKET_NAME/$MODPACK_FILE /modpacks/
+        env:
+        - name: S3_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-s3-credentials
+              key: access-key
+        - name: S3_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-s3-credentials
+              key: secret-key
+        volumeMounts:
+        - name: modpacks
+          mountPath: /modpacks
+      containers:
+      - name: minecraft
+        image: {{ .Values.config.imageVersion }}:{{ .Values.config.minecraftVersion }}-{{ .Values.config.javaVersion }}
+        env:
+        - name: EULA
+          value: {{ .Values.config.eula }}
+        - name: TYPE
+          value: {{ .Values.config.serverType }}
+        {{- if eq .Values.config.serverType "CURSEFORGE" }}
+        - name: CF_SERVER_MOD
+          value: {{ .Values.config.curseforge.serverMod }}
+        {{- end }}
+        ports:
+        - containerPort: {{ .Values.config.network.tcpPort }}
+          name: minecraft-tcp
+        - containerPort: {{ .Values.config.network.udpPort }}
+          name: minecraft-udp
+        volumeMounts:
+        - name: minecraft-data
+          mountPath: /data
+        - name: minecraft-modpacks
+          mountPath: /modpacks
+          readOnly: true
+      volumes:
+      - name: minecraft-data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-data-claim

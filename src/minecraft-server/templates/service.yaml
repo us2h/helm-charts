@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-service
+  namespace: {{ .Values.config.namespace | default .Release.Namespace }}
+spec:
+  type: LoadBalancer
+  selector:
+    app: {{ .Release.Name }}
+  ports:
+  - port: {{ .Values.config.tcpPort }}
+    targetPort: 25565
+    protocol: TCP
+    name: game-tcp
+  - port: {{ .Values.config.udpPort }}
+    targetPort: 19132
+    protocol: UDP
+    name: game-udp
