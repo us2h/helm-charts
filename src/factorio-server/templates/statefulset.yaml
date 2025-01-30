@@ -50,7 +50,11 @@ spec:
           name: {{ .Release.Name }}-config
       - name: config-dir
         emptyDir: {}
-  volumes:
-  - name: data
-    persistentVolumeClaim:
-      claimName: {{ .Release.Name }}-pvc
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.config.volumeSize }}
