@@ -52,4 +52,4 @@ spec:
         emptyDir: {}
       - name: data
         persistentVolumeClaim:
-          claimName: {{ .Release.Name }}-factorio-data
+          claimName: {{ .Release.Name }}-pvc
