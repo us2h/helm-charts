@@ -23,14 +23,3 @@ spec:
         {{- end }}
         {{- end }}
   {{- end }}
-  capacity:
-    storage: {{ .Values.volumeSize }}
-  volumeMode: Filesystem
-  accessModes:
-  - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: longhorn
-  csi:
-    driver: driver.longhorn.io
-    fsType: ext4
-    volumeHandle: {{ .Release.Name }}-pvc
