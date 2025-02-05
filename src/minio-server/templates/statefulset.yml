@@ -16,49 +16,63 @@ spec:
       labels:
         app: {{ .Release.Name }}
     spec:
-      nodeSelector:
-        node-role.kubernetes.io/worker: "true"
+      {{- if .Values.nodeAffinity.enabled }}
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          {{- range .Values.nodeAffinity.preferredNodes }}
+          - weight: {{ .weight }}
+            preference:
+              matchExpressions:
+              {{- range $key, $value := .labels }}
+              - key: {{ $key }}
+                operator: In
+                values:
+                - {{ $value }}
+              {{- end }}
+          {{- end }}
+      {{- end }}
       containers:
-        - name: {{ .Release.Name }}
-          image: minio/minio:{{ .Values.imageVersion }}
-          args:
-            - server
-            - --console-address
-            - ":9001"
-            - /data
-          env:
-            - name: MINIO_ROOT_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-secret
-                  key: MINIO_ROOT_USER
-            - name: MINIO_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-secret
-                  key: MINIO_ROOT_PASSWORD
-          volumeMounts:
-            - mountPath: "/data"
-              name: {{ .Release.Name }}-volume
-          ports:
-            - containerPort: 9000
-            - containerPort: 9001
-          readinessProbe:
-            httpGet:
-              path: /minio/health/live
-              port: 9000
-            initialDelaySeconds: 30
-            timeoutSeconds: 5
-            periodSeconds: 10
-            failureThreshold: 3
-          livenessProbe:
-            httpGet:
-              path: /minio/health/live
-              port: 9000
-            initialDelaySeconds: 60
-            timeoutSeconds: 5
-            periodSeconds: 30
-            failureThreshold: 5
+      - name: {{ .Release.Name }}
+        image: minio/minio:{{ .Values.imageVersion }}
+        args:
+        - server
+        - --console-address
+        - ":9001"
+        - /data
+        env:
+        - name: MINIO_ROOT_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-secret
+              key: MINIO_ROOT_USER
+        - name: MINIO_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-secret
+              key: MINIO_ROOT_PASSWORD
+        volumeMounts:
+        - mountPath: "/data"
+          name: {{ .Release.Name }}-volume
+        ports:
+        - containerPort: 9000
+        - containerPort: 9001
+        readinessProbe:
+          httpGet:
+            path: /minio/health/live
+            port: 9000
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /minio/health/live
+            port: 9000
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          periodSeconds: 30
+          failureThreshold: 5
       volumes:
       - name: {{ .Release.Name }}-volume
         persistentVolumeClaim:

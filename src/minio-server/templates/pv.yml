@@ -3,11 +3,31 @@ kind: PersistentVolume
 metadata:
   name: {{ .Release.Name }}-pv
 spec:
+  {{- if .Values.nodeAffinity.enabled }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        {{- range .Values.nodeAffinity.preferredNodes }}
+        {{- range $key, $value := .labels }}
+        - key: {{ $key }}
+          operator: In
+          values:
+          {{- range $nodeLabels := $.Values.nodeAffinity.preferredNodes }}
+          {{- range $k, $v := $nodeLabels.labels }}
+          {{- if eq $k $key }}
+          - {{ $v }}
+          {{- end }}
+          {{- end }}
+          {{- end }}
+        {{- end }}
+        {{- end }}
+  {{- end }}
   capacity:
     storage: {{ .Values.volumeSize }}
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   persistentVolumeReclaimPolicy: Delete
   storageClassName: longhorn
   csi:

@@ -9,3 +9,22 @@ username: user
 password: pass
 
 volumeSize: 100Gi
+
+nodeAffinity:
+  enabled: false
+  preferredNodes:
+    - name: primary
+      weight: 100
+      labels:
+        size: medium
+        cpu-type: intel
+    - name: secondary
+      weight: 50
+      labels:
+        size: medium
+        cpu-type: n100
+    - name: fallback
+      weight: 25
+      labels:
+        size: large
+        cpu-type: amd
