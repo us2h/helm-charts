@@ -19,9 +19,9 @@ spec:
         image: busybox
         command: ['sh', '-c', ' 
           mkdir -p /factorio/config && 
-          cp -r /factorio/config/ /config/ && 
+          cp -r /factorio/config/ /config && 
           cp /tmp/server-settings.json /config/server-settings.json && 
-          chown -R 845:845 /config/ /factorio/saves'
+          chown -R 845:845 /config'
         ]
         volumeMounts:
         - name: data
