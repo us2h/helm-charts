@@ -50,11 +50,6 @@ spec:
           name: {{ .Release.Name }}-config
       - name: config-dir
         emptyDir: {}
-  volumeClaimTemplates:
-  - metadata:
-      name: data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: {{ .Values.config.volumeSize }}
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-factorio-data
