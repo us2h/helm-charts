@@ -1,22 +1,16 @@
-namespace: test-app
-domain: test.us2h.com
+namespace: test-affinity
+domain: test2.us2h.com
 volumeSize: 1Gi
 
 nodeAffinity:
   enabled: true
   preferredNodes:
-    - name: primary
-      weight: 100
-      labels:
-        size: medium
+    - labels:
         cpu-type: intel
-    - name: secondary
-      weight: 50
-      labels:
         size: medium
+    - labels:
         cpu-type: n100
-    - name: fallback
-      weight: 25
-      labels:
-        size: large
+        size: medium
+    - labels:
         cpu-type: amd
+        size: large

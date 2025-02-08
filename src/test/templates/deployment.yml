@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-deployment
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
     app: {{ .Release.Name }}
 spec:
@@ -28,20 +29,19 @@ spec:
         - name: {{ .Release.Name }}-volume
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-pvc
-      {{- if .Values.nodeAffinity.enabled }}
       # Node affinity
+      {{- if .Values.nodeAffinity.enabled }}
       affinity:
         nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          {{- range .Values.nodeAffinity.preferredNodes }}
-          - weight: {{ .weight }}
-            preference:
-              matchExpressions:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            {{- range .Values.nodeAffinity.preferredNodes }}
+            - matchExpressions:
               {{- range $key, $value := .labels }}
               - key: {{ $key }}
                 operator: In
                 values:
-                - {{ $value }}
+                  - {{ $value }}
               {{- end }}
-          {{- end }}
+            {{- end }}
       {{- end }}

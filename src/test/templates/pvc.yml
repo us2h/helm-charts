@@ -5,9 +5,9 @@ metadata:
   namespace: {{ .Values.namespace | default .Release.Namespace }}
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.volumeSize }}
-  storageClassName: longhorn
+      storage: 1Gi
   volumeName: {{ .Release.Name }}-pv
+  storageClassName: longhorn

@@ -16,22 +16,17 @@ spec:
     volumeHandle: {{ .Release.Name }}-pvc
   # Affinity
   {{- if .Values.nodeAffinity.enabled }}
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
         {{- range .Values.nodeAffinity.preferredNodes }}
-        {{- range $key, $value := .labels }}
-        - key: {{ $key }}
-          operator: In
-          values:
-          {{- range $nodeLabels := $.Values.nodeAffinity.preferredNodes }}
-          {{- range $k, $v := $nodeLabels.labels }}
-          {{- if eq $k $key }}
-          - {{ $v }}
+        - matchExpressions:
+          {{- range $key, $value := .labels }}
+          - key: {{ $key }}
+            operator: In
+            values:
+              - {{ $value }}
           {{- end }}
-          {{- end }}
-          {{- end }}
-        {{- end }}
         {{- end }}
   {{- end }}

@@ -3,23 +3,36 @@ kind: PersistentVolume
 metadata:
   name: {{ .Release.Name }}-pv
 spec:
-  {{- if .Values.nodeAffinity.enabled }}
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: longhorn
   nodeAffinity:
     required:
       nodeSelectorTerms:
-      - matchExpressions:
-        {{- range .Values.nodeAffinity.preferredNodes }}
-        {{- range $key, $value := .labels }}
-        - key: {{ $key }}
-          operator: In
-          values:
-          {{- range $nodeLabels := $.Values.nodeAffinity.preferredNodes }}
-          {{- range $k, $v := $nodeLabels.labels }}
-          {{- if eq $k $key }}
-          - {{ $v }}
-          {{- end }}
-          {{- end }}
-          {{- end }}
-        {{- end }}
-        {{- end }}
-  {{- end }}
+        - matchExpressions:
+            - key: cpu-type
+              operator: In
+              values:
+                - intel
+                - n100
+            - key: size
+              operator: In
+              values:
+                - medium
+        - matchExpressions:
+            - key: cpu-type
+              operator: In
+              values:
+                - amd
+            - key: size
+              operator: In
+              values:
+                - large
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeHandle: {{ .Release.Name }}-pvc  # This should match your desired Longhorn volume name
