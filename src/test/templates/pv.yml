@@ -3,18 +3,6 @@ kind: PersistentVolume
 metadata:
   name: {{ .Release.Name }}-pv
 spec:
-  capacity:
-    storage: {{ .Values.volumeSize }}
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: longhorn
-  csi:
-    driver: driver.longhorn.io
-    fsType: ext4
-    volumeHandle: {{ .Release.Name }}-pvc
-  # Affinity
   {{- if .Values.nodeAffinity.enabled }}
   nodeAffinity:
     required:

@@ -14,8 +14,7 @@ spec:
       labels:
         app: {{ .Release.Name }}
     spec:
-      nodeSelector:
-        node-role.kubernetes.io/worker: "true"
+      # Containers
       containers:
         - name: {{ .Release.Name }}
           image: nginx:latest
@@ -24,7 +23,25 @@ spec:
               name: {{ .Release.Name }}-volume
           ports:
             - containerPort: 80
+      # Volumes
       volumes:
         - name: {{ .Release.Name }}-volume
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-pvc
+      {{- if .Values.nodeAffinity.enabled }}
+      # Node affinity
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          {{- range .Values.nodeAffinity.preferredNodes }}
+          - weight: {{ .weight }}
+            preference:
+              matchExpressions:
+              {{- range $key, $value := .labels }}
+              - key: {{ $key }}
+                operator: In
+                values:
+                - {{ $value }}
+              {{- end }}
+          {{- end }}
+      {{- end }}

@@ -11,7 +11,7 @@ password: pass
 volumeSize: 100Gi
 
 nodeAffinity:
-  enabled: false
+  enabled: true
   preferredNodes:
     - name: primary
       weight: 100
