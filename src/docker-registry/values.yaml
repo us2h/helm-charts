@@ -1,0 +1,16 @@
+namespace: docker-registry
+domain: registry.us2h.com
+
+registry:
+  image: registry:2.8.3
+  replicas: 1
+  cache:
+    blobdescriptor: "inmemory"
+  storage:
+    s3:
+      accessKey: "wHD5zfWpFewAL3CoJJE4"
+      secretKey: "pjIXf4dpzvpXgzIbVFUVRUYOzUFQSdGOY0ARRFyV"
+      region: "nas"
+      endpoint: "https://api.s3.us2h.com"
+      bucket: "docker-registry"
+      secure: "true"

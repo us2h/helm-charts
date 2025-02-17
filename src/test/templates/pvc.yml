@@ -8,6 +8,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
-  volumeName: {{ .Release.Name }}-pv
+      storage: {{ .Values.volumeSize }}
   storageClassName: longhorn

@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: {{ .Release.Namespace | default .Values.namespace }}
+spec:
+  replicas: {{ .Values.registry.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: registry
+          image: {{ .Values.registry.image }}
+          ports:
+            - containerPort: 5000
+          env:
+            # Authentication
+            - name: REGISTRY_AUTH
+              value: "htpasswd"
+            - name: REGISTRY_AUTH_HTPASSWD_REALM
+              value: "Registry Realm"
+            - name: REGISTRY_AUTH_HTPASSWD_PATH
+              value: "/auth/htpasswd"
+            # Storage
+            - name: REGISTRY_STORAGE
+              value: "s3"
+            - name: REGISTRY_STORAGE_S3_REGIONENDPOINT
+              value: {{ .Values.registry.storage.s3.endpoint | quote }}
+            - name: REGISTRY_STORAGE_S3_SECURE
+              value: {{ .Values.registry.storage.s3.secure | quote }}
+            - name: REGISTRY_STORAGE_S3_REGION
+              value: {{ .Values.registry.storage.s3.region | quote }}
+            - name: REGISTRY_STORAGE_S3_BUCKET
+              value: {{ .Values.registry.storage.s3.bucket | quote }}
+            - name: REGISTRY_STORAGE_S3_ACCESSKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-s3-secret
+                  key: s3-access-key
+            - name: REGISTRY_STORAGE_S3_SECRETKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-s3-secret
+                  key: s3-secret-key
+            # Cache
+            - name: REGISTRY_CACHE_BLOBDESCRIPTOR
+              value: {{ .Values.registry.cache.blobdescriptor }}
+          volumeMounts:
+            - name: auth-volume
+              mountPath: /auth
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+      volumes:
+        - name: auth-volume
+          secret:
+            secretName: {{ .Release.Name }}-registry-auth-secret
+            items:
+              - key: htpasswd
+                path: htpasswd

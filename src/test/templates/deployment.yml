@@ -29,19 +29,32 @@ spec:
         - name: {{ .Release.Name }}-volume
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-pvc
-      # Node affinity
-      {{- if .Values.nodeAffinity.enabled }}
       affinity:
         nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            {{- range .Values.nodeAffinity.preferredNodes }}
-            - matchExpressions:
-              {{- range $key, $value := .labels }}
-              - key: {{ $key }}
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: size
                 operator: In
                 values:
-                  - {{ $value }}
-              {{- end }}
-            {{- end }}
-      {{- end }}
+                - medium
+              - key: cpu
+                operator: In
+                values:
+                - i3
+
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: size
+                operator: In
+                values:
+                - medium
+                - large
+              - key: cpu
+                operator: In
+                values:
+                - i3
+                - n100
+                - ryzen5
